@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Team:
+    Type: String
+  Environment:
+    Type: String
+  Product:
+    Type: String
+  HostName:
+    Type: String
+  HostedZoneName:
+    Type: String
+  StageName:
+    Type: String
+  CorsOrigin:
+    Type: CommaDelimitedList
+    Description: Comma separated list of origins
+
+Mappings:
+  Auth0:
+    Issuer:
+      qa: mmm-qa.auth0.com
+      dev: mmm-dev.auth0.com
+      rd: mmm-rd.auth0.com
+      pr: mmm-pr.auth0.com
+
+Conditions:
+  # IsProd: !Equals [!Ref Environment, pr]
+  CorsAny: !Equals [!Join [ '', !Ref CorsOrigin ], '*']
+
+Resources:
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+      AuthorizerType: JWT
+      IdentitySource:
+        - $request.header.Authorization
+      JwtConfiguration:
+        Audience:
+          - !GetAtt AuthApi.Audience
+        Issuer:
+          Fn::Join:
+            - ''
+            - - https://
+              - !FindInMap [ Auth0, Issuer, !Ref Environment ]
+              - /
+      Name: !Sub ${Environment}-${Team}-${Product}-Authorizer
+
+  ApiGatewayRestApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      ProtocolType: HTTP
+      Description: An API Gateway with a Lambda Integration
+      Name: !Sub ${Environment}-${Team}-${Product}
+      CorsConfiguration:
+        AllowCredentials: !If [CorsAny, !Ref AWS::NoValue, True]
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - "*"
+        AllowOrigins: !Ref CorsOrigin
+        ExposeHeaders:
+          - "*"
+        MaxAge: 300
+
+  ApiGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      AutoDeploy: True
+      Description: Lambda API Stage v0
+      ApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref StageName
+      AccessLogSettings:
+        DestinationArn: !GetAtt AccessLogGroup.Arn
+        Format: '$context.identity.sourceIp - - [$context.requestTime] "$context.httpMethod $context.routeKey $context.protocol" $context.status $context.responseLength $context.requestId'
+
+  AccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub apigateway/${Team}/${AWS::StackName}
+      RetentionInDays: 365
+
+  ApiDomain:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Ref HostName
+      DomainNameConfigurations:
+        - CertificateArn:
+            Fn::ImportValue: !Sub ${Environment}-nucleus-acm-certs:WildCardDomains
+          SecurityPolicy: TLS_1_2
+
+  ApiRecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt ApiDomain.RegionalDomainName
+        HostedZoneId: !GetAtt ApiDomain.RegionalHostedZoneId
+      HostedZoneName: !Sub ${HostedZoneName}.
+      Name: !Ref HostName
+      Type: A
+
+  AuthApi:
+    Type: Custom::Authn_Api
+    Properties:
+      ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
+      Name: !Sub ${Environment}-${Team}-${Product}
+      Tenant: !FindInMap [Auth0, Issuer, !Ref Environment]
+      Audience: !Join ["", ["https://", !Ref HostName]]
+
+  AuthApp:
+    Type: Custom::Authn_Application
+    DependsOn:
+      - AuthApi # This is required to avoid delete race conditions
+    Properties:
+      ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
+      Name: !Sub ${Environment}-${Team}-${Product}
+      Tenant: !FindInMap [Auth0, Issuer, !Ref Environment]
+      Type: m2m # M2M for example because it's easier to generate your tokens for examples
+      Description: !Sub |
+        ${Environment}
+        ${Team}
+        ${Product}
+
+  AuthGrant:
+    Type: Custom::Authn_Grant
+    Properties:
+      ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
+      # Use the Audience return value from the AuthApi. If the audience changes your grant will update correctly
+      Audience: !GetAtt AuthApi.Audience
+      Tenant: !FindInMap [Auth0, Issuer, !Ref Environment]
+      ApplicationId: !GetAtt AuthApp.ClientId
+
+Outputs:
+  GatewayEndpoint:
+    Description: The URL to your API Gateway
+    Value: !Join ["", ["https://", !Ref HostName]]
+    Export:
+      Name: !Sub ${Environment}-entity-apis:GatewayEndpoint
+  GatewayId:
+    Description: API Gateway ID
+    Value: !Ref ApiGatewayRestApi
+    Export:
+      Name: !Sub ${Environment}-entity-apis:GatewayId
+  JWTAuthorizerId:
+    Description: API Gateway JWT Authorizer Id
+    Value: !Ref ApiGatewayAuthorizer
+    Export:
+      Name: !Sub ${Environment}-entity-apis:JWTAuthorizerId
