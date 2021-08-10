@@ -1,4 +1,4 @@
-''' Note: this code is used only by the static type checker! '''
+""" Note: this code is used only by the static type checker! """
 from typing import (
     Any,
     TypedDict,
@@ -6,10 +6,10 @@ from typing import (
 # pylint: disable=too-few-public-methods
 class LambdaDict(TypedDict):
     # pylint: disable=line-too-long
-    '''
+    """
     Lambda event for custom resource
     See: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html
-    '''
+    """
     RequestType: str
     ResponseURL: str
     StackId: str
@@ -22,17 +22,17 @@ class LambdaDict(TypedDict):
 
 # pylint: disable=too-few-public-methods
 class LambdaCognitoIdentity():
-    '''
+    """
     Context type hints for lambda context
-    '''
+    """
     cognito_identity_id: str
     cognito_identity_pool_id: str
 
 # pylint: disable=too-few-public-methods
 class LambdaClientContextMobileClient():
-    '''
+    """
     Context type hints for lambda context
-    '''
+    """
     installation_id: str
     app_title: str
     app_version_name: str
@@ -41,18 +41,18 @@ class LambdaClientContextMobileClient():
 
 # pylint: disable=too-few-public-methods
 class LambdaClientContext():
-    '''
+    """
     Context type hints for lambda context
-    '''
+    """
     client: LambdaClientContextMobileClient
     custom: LambdaDict
     env: LambdaDict
 
 # pylint: disable=too-few-public-methods
 class LambdaContext():
-    '''
+    """
     Context type hints for lambda context
-    '''
+    """
     function_name: str
     function_version: str
     invoked_function_arn: str
@@ -65,5 +65,5 @@ class LambdaContext():
 
     @staticmethod
     def get_remaining_time_in_millis() -> int:
-        '''mock the method for type hint'''
+        """mock the method for type hint"""
         return 0

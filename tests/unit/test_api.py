@@ -1,6 +1,6 @@
-'''
+"""
 Test the api resource type
-'''
+"""
 from contextlib import contextmanager
 from unittest.mock import MagicMock, patch
 import pytest
@@ -13,7 +13,7 @@ import src.api as api
 
 @contextmanager
 def does_not_raise():
-    '''Helper for error raising'''
+    """Helper for error raising"""
     yield
 
 
@@ -68,7 +68,7 @@ case_names = [case['name'] for case in cases]  # pylint: disable=invalid-name
 
 @pytest.mark.parametrize('case', cases, ids=case_names)
 def test_validate(case):
-    '''test initializing the grant object'''
+    """test initializing the grant object"""
     excepted = False
     with case['expect'].get('error', does_not_raise()):
         doc = auth0Validator.validated(case['parameters'])
@@ -86,7 +86,7 @@ def test_validate(case):
 @pytest.mark.parametrize('case', cases, ids=case_names)
 @patch('src.grant.config.get_provider')
 def test_create(get_provider, case):
-    '''test creating an api'''
+    """test creating an api"""
     provider = MagicMock()
     provider.create_api.return_value = 'apiid'
 
@@ -114,7 +114,7 @@ def test_create(get_provider, case):
 @pytest.mark.parametrize('case', cases, ids=case_names)
 @patch('src.grant.config.get_provider')
 def test_update(get_provider, case):
-    '''test updating an api'''
+    """test updating an api"""
     provider = MagicMock()
     provider.update_api.return_value = 'apiid'
 
@@ -145,7 +145,7 @@ def test_update(get_provider, case):
 
 @patch('src.api.config.get_provider')
 def test_delete(get_provider):
-    '''test deleting a grant'''
+    """test deleting a grant"""
     provider = MagicMock()
     provider.delete_api.return_value = 'grantid'
     helper = MagicMock()

@@ -1,6 +1,6 @@
-'''
+"""
 Test the grant resource type
-'''
+"""
 from contextlib import contextmanager
 from unittest.mock import MagicMock, patch
 import pytest
@@ -13,7 +13,7 @@ import src.grant as grant
 
 @contextmanager
 def does_not_raise():
-    '''Helper for error raising'''
+    """Helper for error raising"""
     yield
 
 
@@ -56,7 +56,7 @@ case_names = [case['name'] for case in cases]  # pylint: disable=invalid-name
 
 @pytest.mark.parametrize('case', cases, ids=case_names)
 def test_validate(case):
-    '''test initializing the grant object'''
+    """test initializing the grant object"""
     excepted = False
     with case['expect'].get('error', does_not_raise()):
         doc = auth0Validator.validated(case['parameters'])
@@ -74,7 +74,7 @@ def test_validate(case):
 @pytest.mark.parametrize('case', cases, ids=case_names)
 @patch('src.grant.config.get_provider')
 def test_create(get_provider, case):
-    '''test creating a grant'''
+    """test creating a grant"""
     provider = MagicMock()
     provider.create_grant.return_value = 'grantid'
 
@@ -100,7 +100,7 @@ def test_create(get_provider, case):
 
 @patch('src.grant.config.get_provider')
 def test_delete(get_provider):
-    '''test deleting a grant'''
+    """test deleting a grant"""
     provider = MagicMock()
     provider.delete_grant.return_value = 'grantid'
     helper = MagicMock()

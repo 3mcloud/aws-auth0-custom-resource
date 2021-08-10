@@ -1,22 +1,22 @@
-'''
+"""
 Schema validation
-'''
+"""
 import stringcase
 from cerberus import Validator
 
 
 def to_bool(val):
-    '''Return a bool version of val'''
+    """Return a bool version of val"""
     if isinstance(val, bool):
         return val
     return val in ['true', 'True']
 
 
 class AuthnValidator(Validator):
-    '''
+    """
     Validator primitives for muxing cloudformation into
     valid api calls and ensuring the values are correct
-    '''
+    """
     def __init__(self, schema, *args, with_defaults=None, **kwargs):
         super().__init__(schema, *args, **kwargs)
         self.with_defaults = with_defaults
@@ -29,7 +29,7 @@ class AuthnValidator(Validator):
             normalize=True,
             always_return_document=False,
     ):
-        ''' overload internal validated to change the order of operations'''
+        """ overload internal validated to change the order of operations"""
         if schema is None:
             schema = self.schema
         document = self.normalize_document(document)
@@ -54,28 +54,28 @@ class AuthnValidator(Validator):
         # return document
 
     def apply_defaults(self, document):
-        '''
+        """
         if self.with_defaults then apply the default values
         DOES NOT support normalization. This is called after
         normalization has happened. Any defaults need to be the
         coerced names/values of the schema.
-        '''
+        """
         if not self.with_defaults or not callable(self.with_defaults):
             return document
 
         return {**self.with_defaults(document), **document}
 
     def coerce_mapping(self, mapping, schema):
-        '''Follow all the coersions in a mapping, recursively'''
+        """Follow all the coersions in a mapping, recursively"""
         self._normalize_coerce(mapping, schema)
         for field in mapping:
             if isinstance(mapping[field], dict) and 'schema' in schema[field]:
                 self.coerce_mapping(mapping[field], schema[field]['schema'])
 
     def normalize_document(self, document):
-        '''
+        """
         convert all input keys to snakecase
-        '''
+        """
         out = None
         if isinstance(document, dict):
             out = {}

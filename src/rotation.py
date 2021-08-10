@@ -1,4 +1,4 @@
-'''Rotation is used to rotate auth resource secrets'''
+"""Rotation is used to rotate auth resource secrets"""
 
 import logging
 import json
@@ -16,7 +16,7 @@ client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
 
 
 def lambda_handler(event, context):
-    '''Secrets Manager Rotation Handler
+    """Secrets Manager Rotation Handler
 
     Args:
       event (dict): Lambda dictionary of event parameters. These keys must include the following:
@@ -28,7 +28,7 @@ def lambda_handler(event, context):
       ResourceNotFoundException: If the secret with the specified arn and stage does not exist
       ValueError: If the secret is not properly configured for rotation
       KeyError: If the event parameters do not contain the expected keys
-    '''
+    """
     # Set up logging based on the LOGGING_LEVEL environment variable
     level_str = os.getenv('LOGGING_LEVEL', 'INFO')
     config.set_logging_level(logger, level_str)
@@ -87,11 +87,11 @@ def lambda_handler(event, context):
 
 
 def create_secret(secrets_client, provider, secret_id, token):
-    '''Default secret method
+    """Default secret method
 
     If the secret does not yet exist, it throws an error. Since creating auth secrets
     and rotating them is atomic, this also sets the secret.
-    '''
+    """
     logger.info('create secret %s', secret_id)
     # Get the secret contents
     secret_val = json.loads(secret.get_secret(
@@ -114,7 +114,7 @@ def create_secret(secrets_client, provider, secret_id, token):
     logger.info('create secret finished')
 
 def rollback_secret(provider, secret_val):
-    '''rollback a secret in auth0 that failed to update in secrets manager'''
+    """rollback a secret in auth0 that failed to update in secrets manager"""
     logger.info('secret failed to update in secrets manager. rolling back')
     provider.update_application(
         client_id=secret_val['client_id'],
@@ -122,20 +122,20 @@ def rollback_secret(provider, secret_val):
     )
 
 def set_secret():
-    '''Default set method, does nothing.
+    """Default set method, does nothing.
 
     Since creating auth secret and rotating them is atomic, this method does nothing.
-    '''
+    """
 
 
 def test_secret(secrets_client, provider, arn):
-    '''Test the client id/client secret pair are the same
+    """Test the client id/client secret pair are the same
     in secrets manager as they are in the provider
 
     Args:
       client (client): The secrets manager service client
       arn (string): The arn of the secrets manager secret
-    '''
+    """
     logger.info('test secret %s', arn)
     new_secret = json.loads(secret.get_secret(
         client=secrets_client, secret_id=arn, logger=logger, stage="AWSPENDING"))
@@ -152,7 +152,7 @@ def test_secret(secrets_client, provider, arn):
 
 
 def finish_secret(secrets_client, arn, token):
-    '''Finish the secret by marking it as AWSCURRENT
+    """Finish the secret by marking it as AWSCURRENT
 
     This method finalizes the rotation process by marking the secret version passed
     in as the AWSCURRENT secret.
@@ -162,7 +162,7 @@ def finish_secret(secrets_client, arn, token):
       token (string): The ClientRequestToken associated with the secret version
     Raises:
       ResourceNotFoundException: If the secret with the specified arn does not exist
-    '''
+    """
     logger.info('finish secret')
     # First describe the secret to get the current version
     metadata = secrets_client.describe_secret(SecretId=arn)

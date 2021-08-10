@@ -1,4 +1,4 @@
-'''Unit tests for the lambda handler'''
+"""Unit tests for the lambda handler"""
 from unittest.mock import patch, MagicMock as Mock
 import pytest
 
@@ -9,7 +9,7 @@ from src import custom_resource as index
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
 def test_lambda_handler(_, resource):
-    '''Test for create events to the lambda handler'''
+    """Test for create events to the lambda handler"""
     new_message = 'new message'
     context = Mock()
     event = {
@@ -27,7 +27,7 @@ def test_lambda_handler(_, resource):
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
 def test_handler_create(_, resource):
-    '''Test for create events to the lambda handler'''
+    """Test for create events to the lambda handler"""
     new_message = 'new message'
     context = Mock()
     event = {
@@ -45,7 +45,7 @@ def test_handler_create(_, resource):
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
 def test_handler_update(_, resource):
-    '''Test for update events to the lambda handler'''
+    """Test for update events to the lambda handler"""
     message = 'a message'
     new_message = 'new message'
     context = Mock()
@@ -64,7 +64,7 @@ def test_handler_update(_, resource):
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
 def test_handler_delete(_, resource):
-    '''Test for delete events to the lambda handler'''
+    """Test for delete events to the lambda handler"""
     message = 'a message'
     new_message = 'new message'
     context = Mock()
@@ -82,7 +82,7 @@ def test_handler_delete(_, resource):
 
 @patch('src.custom_resource.config', Mock())
 def test_handler_invalid_type():
-    '''Test for invalid events to the lambda handler'''
+    """Test for invalid events to the lambda handler"""
     context = Mock()
     event = {
         'RequestType': 'Invalid',
@@ -94,7 +94,7 @@ def test_handler_invalid_type():
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
 def test_handler_error(_, resource):
-    '''Test for errors during handling of an event'''
+    """Test for errors during handling of an event"""
     context = Mock()
     event = {
         'RequestType': 'Delete',
@@ -106,6 +106,6 @@ def test_handler_error(_, resource):
 
 @pytest.mark.parametrize('event', stack_events.get(), ids=stack_events.get(True))
 def test_stack_is_failing(event):
-    '''test events to see if stack is failing'''
+    """test events to see if stack is failing"""
 
     assert index.stack_is_failing(event) is not event["success"]

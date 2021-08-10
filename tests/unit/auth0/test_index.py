@@ -1,5 +1,5 @@
 # pylint: disable=redefined-outer-name
-'''Tests for auth0/index.py'''
+"""Tests for auth0/index.py"""
 from unittest.mock import patch, MagicMock as Mock
 import pytest
 from src.auth0.index import Auth0Provider
@@ -11,10 +11,10 @@ import src.auth0.index as index
 @patch('src.auth0.index.secret')
 @patch('src.auth0.index.Auth0Provider.authenticate')
 def fixture_fake_auth0(_, secret, boto):
-    '''Test for auth0provider object creation and fixture
+    """Test for auth0provider object creation and fixture
 
     Fixture is used to call object methods in below tests
-    '''
+    """
     secrets = Mock()
     boto.client.return_value = secrets
     secret.get_secret.return_value = (
@@ -29,7 +29,7 @@ def fixture_fake_auth0(_, secret, boto):
 @patch('src.auth0.index.GetToken')
 @patch('src.auth0.index.Auth0')
 def test_authenticate(auth0_obj, get_token, fake_auth0):
-    '''Test for authenticate method'''
+    """Test for authenticate method"""
     fake_token = Mock()
     get_token.return_value = fake_token
     access_token = 'access_token'
@@ -44,7 +44,7 @@ def test_authenticate(auth0_obj, get_token, fake_auth0):
 
 
 def test_resource(fake_auth0):
-    '''Test for creating a resource'''
+    """Test for creating a resource"""
     url = 'url.mmm.com'
     name = 'name'
     client_id = 'client_id'
@@ -66,7 +66,7 @@ def test_resource(fake_auth0):
 
 @patch('src.auth0.index.time')
 def test_get_resource_server(_, fake_auth0):
-    '''Test for get_resource_server'''
+    """Test for get_resource_server"""
     url = 'url.mmm.com'
     server_id = 'server_id'
     fake_auth0.auth0.resource_servers.get_all.side_effect = [
@@ -94,7 +94,7 @@ def test_get_resource_server(_, fake_auth0):
     assert fake_auth0.get_resource_server(url) is None
 
 def test_rotate_client_secret(fake_auth0):
-    '''Test for rotate_client_secret'''
+    """Test for rotate_client_secret"""
     client_id = 'client_id'
     new_secret = 'new_secret'
     fake_auth0.auth0.clients.rotate_secret.return_value = {
@@ -104,13 +104,13 @@ def test_rotate_client_secret(fake_auth0):
 
 
 def test_update_resource(fake_auth0):
-    '''Test for update_resource'''
+    """Test for update_resource"""
     # Update doesn't do anything at the moment
     fake_auth0.update_resource()
 
 
 def test_delete_resource(fake_auth0):
-    '''Test for delete_resource'''
+    """Test for delete_resource"""
     resource_id = 'resource_id'
     client_id = 'client_id'
     fake_auth0.delete_resource(resource_id, client_id)

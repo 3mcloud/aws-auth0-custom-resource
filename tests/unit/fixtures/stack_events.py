@@ -1,10 +1,10 @@
-'''
+"""
 Holds lists of different types of events
-'''
+"""
 
 # pylint: disable=line-too-long
 def get(ids = False):
-    '''holds different stack events'''
+    """holds different stack events"""
     cases = [{
         "name": "new_stack_create_failed",
         "success": False,

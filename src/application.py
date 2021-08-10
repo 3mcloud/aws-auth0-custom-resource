@@ -1,6 +1,6 @@
-'''
+"""
 Application CRUD handler
-'''
+"""
 import json
 import logging
 import os
@@ -27,9 +27,9 @@ ssm = boto3.client('ssm')  # pylint: disable=invalid-name
 
 
 def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
-    '''
+    """
     Create an application with the given name and kind
-    '''
+    """
     props = event['ResourceProperties']
     validated = auth0Validator.validated(event['ResourceProperties'])
     if not validated:
@@ -97,7 +97,7 @@ def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
 
 
 def manage_connection(connections, app_id, method):
-    '''Manage adding or removing an application from a connection'''
+    """Manage adding or removing an application from a connection"""
     failed = []
     for conn_id in connections:
         try:
@@ -109,11 +109,11 @@ def manage_connection(connections, app_id, method):
 
 
 def update_connections(old, current, provider, app_id):
-    '''
+    """
     Update the connections for the application
 
     Add any new connections and remove any connections that are no longer specified
-    '''
+    """
 
     add_connections = list(set(current) - set(old))
     remove_connections = list(set(old) - set(current))
@@ -130,7 +130,7 @@ def update_connections(old, current, provider, app_id):
 
 
 def update(event: LambdaDict, context: LambdaContext, helper: CfnResource):  # pylint: disable=unused-argument
-    '''Update an application'''
+    """Update an application"""
     props = event['ResourceProperties']
     validated = auth0Validator.validated(props)
     if not validated:
@@ -172,7 +172,7 @@ def update(event: LambdaDict, context: LambdaContext, helper: CfnResource):  # p
 
 
 def delete(event: LambdaDict, context: LambdaContext, helper: CfnResource):  # pylint: disable=unused-argument
-    '''Delete an application'''
+    """Delete an application"""
     props = event['ResourceProperties']
     provider = config.get_provider(props['Tenant'])
     ok_exceptions = (

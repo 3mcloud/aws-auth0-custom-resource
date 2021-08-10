@@ -1,6 +1,6 @@
-'''
+"""
 Validate and coerce event resource parameters
-'''
+"""
 from . import AuthnValidator
 
 auth0 = {  # pylint: disable=invalid-name

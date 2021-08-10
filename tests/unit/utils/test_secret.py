@@ -1,4 +1,4 @@
-'''Tests for utils/secret'''
+"""Tests for utils/secret"""
 
 import base64
 from unittest.mock import MagicMock as Mock
@@ -8,7 +8,7 @@ from src.utils import secret
 
 
 def test_get_secret():
-    '''Test for get_secret'''
+    """Test for get_secret"""
     client = Mock()
     logger = Mock()
     client.get_secret_value = Mock(
@@ -37,7 +37,7 @@ def test_get_secret():
 
 
 def test_get_secret_error():
-    '''Test for get_secret with a variety of errors'''
+    """Test for get_secret with a variety of errors"""
     cases = [
         ClientError({'Error': {'Code': 'DecryptionFailureException'}}, 'get'),
         ClientError(

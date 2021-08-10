@@ -1,4 +1,4 @@
-'''Tests for utils/config'''
+"""Tests for utils/config"""
 from unittest.mock import patch, MagicMock
 import logging
 import src.utils.config as config
@@ -7,7 +7,7 @@ from src.validation.application import tagsValidator
 
 
 def test_set_logging_level():
-    '''Test for set_logging_level'''
+    """Test for set_logging_level"""
     cases = {
         'CRITICAL': logging.CRITICAL,
         'ERROR': logging.ERROR,
@@ -22,7 +22,7 @@ def test_set_logging_level():
 
 
 def test_get_provider(monkeypatch):
-    '''Test for get_provider'''
+    """Test for get_provider"""
     env = 'qa'
     provider = 'auth0'
     monkeypatch.setenv('ENVIRON', env)
@@ -37,7 +37,7 @@ def test_get_provider(monkeypatch):
 
 @patch('src.utils.config.cfn')
 def test_set_tags(cfn):
-    '''test tags'''
+    """test tags"""
     cfn.describe_stacks.return_value = {
         'Stacks': [
             {'Tags': []}

@@ -1,6 +1,6 @@
-'''
+"""
 Validate and coerce event resource parameters
-'''
+"""
 import json
 from cerberus import Validator
 from . import AuthnValidator, to_bool
@@ -20,7 +20,7 @@ AUTH_METHOD_MAP = {
 
 
 def to_auth_method_type(val):
-    '''coerce the auth method to the api value'''
+    """coerce the auth method to the api value"""
     if not val in AUTH_METHOD_MAP:
         raise ValueError(
             f'method should be one of {",".join(AUTH_METHOD_MAP.keys())}'
@@ -29,7 +29,7 @@ def to_auth_method_type(val):
 
 
 def to_app_type(val):
-    '''coerce the app type value'''
+    """coerce the app type value"""
     if val not in APP_TYPE_MAP:
         raise ValueError(
             'type should be one of {}'.format(','.join(APP_TYPE_MAP.keys()))
@@ -254,7 +254,7 @@ application_defaults = {
 }
 
 def with_defaults(document):
-    '''a function to return defaults on an application type'''
+    """a function to return defaults on an application type"""
     app_type = document['app_type']
     if app_type not in application_defaults:
         return {}

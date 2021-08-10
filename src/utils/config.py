@@ -1,4 +1,4 @@
-'''Config util'''
+"""Config util"""
 import logging
 import os
 
@@ -11,7 +11,7 @@ MANAGEMENT_PREFIX = 'arn:aws:secretsmanager:us-east-1:184518171237:secret:'
 
 
 def set_logging_level(logger, level_str):
-    '''Set up logging based on the LOGGING_LEVEL environment variable'''
+    """Set up logging based on the LOGGING_LEVEL environment variable"""
     if level_str == 'CRITICAL':
         logger.setLevel(logging.CRITICAL)
     if level_str == 'ERROR':
@@ -25,7 +25,7 @@ def set_logging_level(logger, level_str):
 
 
 def get_provider(tenant):
-    '''Get the provider with authentication'''
+    """Get the provider with authentication"""
     provider = os.environ.get('AUTH_PROVIDER')
     tenant_name = tenant.split('.')[0]
     environ = os.environ.get('ENVIRON')
@@ -34,10 +34,10 @@ def get_provider(tenant):
 
 
 def set_tags(helper, event=None):
-    '''
+    """
     Get tags from the cloudformation stack and make them available for other operations
     :param helper: object used to get stack id
-    '''
+    """
     if not event:
         event = {}
     additional = event.get('ResourceProperties', {}).get('AllowAdGroups')

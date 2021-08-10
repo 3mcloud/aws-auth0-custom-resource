@@ -1,9 +1,9 @@
-'''
+"""
 Handler for a authentication custom resource. This custom resource will live
 under the platform level visible to the user, and create apps for them.
 
 Using this repo as reference arch: https://github.com/binxio/cfn-auth0-provider
-'''
+"""
 import os
 import logging
 from typing import Any
@@ -34,11 +34,11 @@ RESOURCES = {
 
 
 def get_resource(event: LambdaDict) -> Any:
-    '''
+    """
     get_resource determines which type of
     resource is being invoked and returns that
     python file for execution
-    '''
+    """
     resource_type = event['ResourceType'].split(':')[-1]
     if resource_type not in RESOURCES:
         raise KeyError(
@@ -53,11 +53,11 @@ def get_resource(event: LambdaDict) -> Any:
 
 @helper.create
 def create(event: LambdaDict, context: LambdaContext) -> str:
-    '''
+    """
     Optionally return an ID that will be used for the resource PhysicalResourceId,
     if None is returned an ID will be generated. If a poll_create function is defined
     return value is placed into the poll event as event['CrHelperData']['PhysicalResourceId']
-    '''
+    """
     logger.info('CREATE')
     logger.info(event)
     config.set_tags(helper, event)
@@ -66,10 +66,10 @@ def create(event: LambdaDict, context: LambdaContext) -> str:
 
 @helper.update
 def update(event: LambdaDict, context: LambdaContext):
-    '''
+    """
     If the update resulted in a new resource being created, return an id for the new resource.
     CloudFormation will send a delete event with the old id when stack update completes
-    '''
+    """
     logger.info('UPDATE')
     logger.info(event)
     config.set_tags(helper, event)
@@ -78,14 +78,14 @@ def update(event: LambdaDict, context: LambdaContext):
 
 @helper.delete
 def delete(event: LambdaDict, context: LambdaContext):
-    ''' Delete function '''
+    """ Delete function """
     logger.info('DELETE')
     logger.info(event)
     return get_resource(event).delete(event, context, helper)
 
 
 def poll_create(event: LambdaDict, context: LambdaContext):
-    '''poll create sets a delay in response for the create'''
+    """poll create sets a delay in response for the create"""
     logger.info('POLL CREATE')
     logger.debug('poll event %s\ncontext: %s', event, context)
     try:
@@ -104,7 +104,7 @@ def poll_create(event: LambdaDict, context: LambdaContext):
     return event['CrHelperData']['PhysicalResourceId']
 
 def stack_is_failing(events):
-    '''iterate stack events, determine if resource creation failed'''
+    """iterate stack events, determine if resource creation failed"""
     failed = False
     failure_modes = ('CREATE_FAILED', 'UPDATE_ROLLBACK_IN_PROGRESS')
     for event in events['StackEvents']:
@@ -117,7 +117,7 @@ def stack_is_failing(events):
 
 
 def lambda_handler(event: LambdaDict, context: LambdaContext):
-    ''' Simply instantiates the cfn helper library '''
+    """ Simply instantiates the cfn helper library """
     # Set up logging based on the LOGGING_LEVEL environment variable
     level_str = os.getenv('LOGGING_LEVEL', 'INFO')
     config.set_logging_level(logger, level_str)

@@ -1,4 +1,4 @@
-'''End to end test for auth0 spa app'''
+"""End to end test for auth0 spa app"""
 
 from unittest.mock import MagicMock
 import pytest
@@ -7,7 +7,7 @@ from src.application import create, delete
 
 
 def test_app(monkeypatch):
-    '''Test the app methods'''
+    """Test the app methods"""
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
 
@@ -55,7 +55,7 @@ def test_app(monkeypatch):
 
 @pytest.mark.skip(reason="only use this to clean up the above when testing SPA apps")
 def test_delete(monkeypatch):
-    '''Helper to delete an app.'''
+    """Helper to delete an app."""
     app_id = 'UKvwmw3VLahKGflmV33UguRRcg0WRSQK'
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
@@ -63,7 +63,7 @@ def test_delete(monkeypatch):
 
 
 def delete_app(app_id):
-    '''Helper to delete an app that was created'''
+    """Helper to delete an app that was created"""
     event = {
         "ResourceProperties": {
             "ServiceToken": '1234',

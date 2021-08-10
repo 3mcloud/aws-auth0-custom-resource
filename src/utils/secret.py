@@ -1,12 +1,12 @@
-'''Secret is a utility for getting a secrets manager secret value'''
+"""Secret is a utility for getting a secrets manager secret value"""
 import base64
 from botocore.exceptions import ClientError
 
 def get_muxed_secret(client, secret_id, logger, stage='AWSCURRENT'):
-    '''
+    """
     Get a secret from secrets manager with the value
     decoded to SecretValue
-    '''
+    """
     try:
         get_secret_value_response = client.get_secret_value(
             SecretId=secret_id,
@@ -46,6 +46,6 @@ def get_muxed_secret(client, secret_id, logger, stage='AWSCURRENT'):
         raise err
 
 def get_secret(client, secret_id, logger, stage='AWSCURRENT'):
-    '''Get a secret value from secrets manager'''
+    """Get a secret value from secrets manager"""
     resource = get_muxed_secret(client, secret_id, logger, stage)
     return resource['SecretValue']

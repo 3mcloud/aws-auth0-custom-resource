@@ -1,4 +1,4 @@
-''' Tests for the rotation lambda. '''
+""" Tests for the rotation lambda. """
 
 import json
 from unittest.mock import patch, MagicMock as Mock, ANY
@@ -13,7 +13,7 @@ URL = 'unit-test.url.com'
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_no_rotation(mock_config, mock_secrets):
-    '''Test the handler when no rotation needs to occur'''
+    """Test the handler when no rotation needs to occur"""
     mock_secrets.describe_secret.return_value = {'RotationEnabled': False}
     mock_secrets.get_secret_value.return_value = {'SecretString': json.dumps(
         {'tenant': 'mmm-dev'}
@@ -35,7 +35,7 @@ def test_handler_no_rotation(mock_config, mock_secrets):
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_rollback(mock_config, mock_secrets, rollback_secret):
-    '''Test the handler when secret is rotated but secrets manager can't update'''
+    """Test the handler when secret is rotated but secrets manager can't update"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -73,7 +73,7 @@ def test_handler_rollback(mock_config, mock_secrets, rollback_secret):
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_no_token(mock_config, mock_secrets):
-    '''Test the handler when there is no token'''
+    """Test the handler when there is no token"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {}
@@ -98,7 +98,7 @@ def test_handler_no_token(mock_config, mock_secrets):
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_is_current(mock_config, mock_secrets):
-    '''When the token passed is already the current'''
+    """When the token passed is already the current"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -124,7 +124,7 @@ def test_handler_is_current(mock_config, mock_secrets):
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_no_pending(mock_config, mock_secrets):
-    '''When there is no pending version to change'''
+    """When there is no pending version to change"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -152,7 +152,7 @@ def test_handler_no_pending(mock_config, mock_secrets):
 @patch('src.rotation.create_secret')
 @patch('src.rotation.config')
 def test_handler_create(mock_config, mock_create, mock_secrets):
-    '''Test the handler with a create event'''
+    """Test the handler with a create event"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -180,7 +180,7 @@ def test_handler_create(mock_config, mock_create, mock_secrets):
 @patch('src.rotation.set_secret')
 @patch('src.rotation.config')
 def test_handler_set(mock_config, mock_set, mock_secrets):
-    '''Test the handler for setting a secret'''
+    """Test the handler for setting a secret"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -208,7 +208,7 @@ def test_handler_set(mock_config, mock_set, mock_secrets):
 @patch('src.rotation.test_secret')
 @patch('src.rotation.config')
 def test_handler_test(mock_config, mock_test, mock_secrets):
-    '''Test the handler with a test event'''
+    """Test the handler with a test event"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -236,7 +236,7 @@ def test_handler_test(mock_config, mock_test, mock_secrets):
 @patch('src.rotation.finish_secret')
 @patch('src.rotation.config')
 def test_handler_finish(mock_config, mock_finish, mock_secrets):
-    '''Test the handler with a finish event'''
+    """Test the handler with a finish event"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -263,7 +263,7 @@ def test_handler_finish(mock_config, mock_finish, mock_secrets):
 @patch('src.rotation.client')
 @patch('src.rotation.config')
 def test_handler_invalid_step(mock_config, mock_secrets):
-    '''Test the handler with an invalid step'''
+    """Test the handler with an invalid step"""
     mock_secrets.describe_secret.return_value = {
         'RotationEnabled': True,
         'VersionIdsToStages': {
@@ -289,7 +289,7 @@ def test_handler_invalid_step(mock_config, mock_secrets):
 
 @patch('src.rotation.secret.get_secret')
 def test_create_secret_exists(mock_get_secret):
-    '''Test the create method'''
+    """Test the create method"""
     client_id = 'client_id'
     new_secret = 'new_secret'
     mock_get_secret.return_value = json.dumps({
@@ -314,14 +314,14 @@ def test_create_secret_exists(mock_get_secret):
 
 
 def test_set_secret():
-    '''Test the set secret method'''
+    """Test the set secret method"""
     # The method does nothing at the moment
     rotation.set_secret()
 
 
 @patch('src.rotation.secret.get_secret')
 def test_test_secret(mock_get_secret):
-    '''Test the test_secret method'''
+    """Test the test_secret method"""
     tenant = 'mmm-id.auth0.com'
     client_id = 'client_id'
     client_secret = 'client_secret'
@@ -340,7 +340,7 @@ def test_test_secret(mock_get_secret):
 
 @patch('src.rotation.secret.get_secret')
 def test_test_secret_fail(mock_get_secret):
-    '''Test the test_secret method when the test fails'''
+    """Test the test_secret method when the test fails"""
     tenant = 'mmm-id.auth0.com'
     client_id = 'client_id'
     client_secret = 'client_secret'
@@ -359,7 +359,7 @@ def test_test_secret_fail(mock_get_secret):
 
 
 def test_finish_secret():
-    '''Test the finish_secret method'''
+    """Test the finish_secret method"""
     mock_secrets = Mock()
     token = 'ver2'
     mock_secrets.describe_secret.return_value = {
@@ -379,7 +379,7 @@ def test_finish_secret():
 
 
 def test_finish_secret_finished():
-    ''' Test that it doesn't update the secret if it's already AWSCURRENT'''
+    """ Test that it doesn't update the secret if it's already AWSCURRENT"""
     mock_secrets = Mock()
     token = 'ver1'
     mock_secrets.describe_secret.return_value = {

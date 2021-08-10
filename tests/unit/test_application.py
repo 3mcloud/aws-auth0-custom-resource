@@ -1,6 +1,6 @@
-'''
+"""
 Test the application resource type
-'''
+"""
 from contextlib import contextmanager
 import json
 from unittest.mock import MagicMock, patch, ANY
@@ -15,7 +15,7 @@ import src.application as app
 
 @contextmanager
 def does_not_raise():
-    '''patch non-raising calls'''
+    """patch non-raising calls"""
     yield
 
 
@@ -296,7 +296,7 @@ case_names = [case['name'] for case in cases]  # pylint: disable=invalid-name
 @pytest.mark.skip('this test adds no value. Use it to debug the validator. case auth0_tags fails in this test')
 @pytest.mark.parametrize('case', cases, ids=case_names)
 def test_validate(case):
-    '''test initializing the application object'''
+    """test initializing the application object"""
     excepted = False
     with case['expect'].get('error', does_not_raise()):
         doc = auth0Validator.validated(case['parameters'])
@@ -316,7 +316,7 @@ def test_validate(case):
 @patch('src.application.secrets_client')
 @patch('src.application.ssm')
 def test_create(ssm, secrets_client, get_provider, case, monkeypatch):
-    '''test creating an application'''
+    """test creating an application"""
     monkeypatch.setenv('KMS_KEY_ID', 'baz_key')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('ROTATION', 'arn:aws:qux')
@@ -384,7 +384,7 @@ def test_create(ssm, secrets_client, get_provider, case, monkeypatch):
 @patch('src.application.config.get_provider')
 @patch('src.application.secret.get_muxed_secret')
 def test_update(get_muxed_secret, get_provider, case, monkeypatch):
-    '''test creating an application'''
+    """test creating an application"""
     monkeypatch.setenv('KMS_KEY_ID', 'baz_key')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('ROTATION', 'arn:aws:qux')
@@ -435,7 +435,7 @@ def test_update(get_muxed_secret, get_provider, case, monkeypatch):
 
 
 def test_manage_connection():
-    '''Test managing a list of connections'''
+    """Test managing a list of connections"""
     connections = ['conn1', 'conn2']
     app_id = '1234'
     method = MagicMock()
@@ -447,7 +447,7 @@ def test_manage_connection():
 
 
 def test_update_connections():
-    '''test updating connections, one to add, one to remove, one to keep'''
+    """test updating connections, one to add, one to remove, one to keep"""
     old = ['a', 'b']
     current = ['b', 'c']
     provider = MagicMock()
@@ -468,7 +468,7 @@ def test_update_connections():
 @patch('src.application.secrets_client', MagicMock())
 @patch('src.application.ssm', MagicMock())
 def test_delete(get_muxed_secret, get_provider):
-    '''test deleting an application'''
+    """test deleting an application"""
     get_muxed_secret.return_value = {
         'ARN': 'arn:aws:secret',
         'Name': '/qa/auth0/cr-unittest',
@@ -508,9 +508,9 @@ def test_delete(get_muxed_secret, get_provider):
 
 
 def test_default_tags():
-    '''
+    """
     Test the tags validation / stripping extra values
-    '''
+    """
     tags = {
         'AlternateContactEmail': 'ktruckenmiller@mmm.com',
         'ApplicationID': '227319dd-0762-4e59-8800-f18d30cce402',

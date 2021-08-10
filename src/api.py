@@ -1,6 +1,6 @@
-'''
+"""
 API CRUD handler
-'''
+"""
 import logging
 
 from auth0.v3.exceptions import Auth0Error
@@ -18,9 +18,9 @@ secrets_client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
 
 
 def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
-    '''
+    """
     Create an api with the given identifier
-    '''
+    """
     props = event['ResourceProperties']
     validated = auth0Validator.validated(props)
     if not validated:
@@ -33,9 +33,9 @@ def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
 
 
 def update(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
-    '''
+    """
     Update an API
-    '''
+    """
     props = event['ResourceProperties']
     validated = auth0Validator.validated(props)
     if not validated:
@@ -57,14 +57,14 @@ def update(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
 
 
 def delete(event: LambdaDict, context: LambdaContext, helper: CfnResource):  # pylint: disable=unused-argument
-    '''Delete an api'''
+    """Delete an api"""
     props = event['ResourceProperties']
     provider = config.get_provider(props['Tenant'])
     delete_handle_err(provider, event['PhysicalResourceId'])
 
 
 def delete_handle_err(provider, api_id):
-    '''Delete an API and handle the errors'''
+    """Delete an API and handle the errors"""
     try:
         # deleting an api id that doesn't exist does not raise exception
         # see e2e/test_errors.py

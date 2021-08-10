@@ -16,7 +16,7 @@ To create an auth resource, include the following in your cloudformation templat
     Properties:
       ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
       Name: example-name
-      Tenant: mmm-dev.auth0.com
+      Tenant: my-tenant.auth0.com
       Audience: https://example-url.com
 ```
 
@@ -30,7 +30,7 @@ To create an auth resource, include the following in your cloudformation templat
     Properties:
       ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
       Name: example-name
-      Tenant: mmm-dev.auth0.com
+      Tenant: my-tenant.auth0.com
       Type: spa # (spa, m2m, web, native)
       Description: "My example"
 ```
@@ -44,7 +44,7 @@ To create an auth resource, include the following in your cloudformation templat
       ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
       # Use the Audience return value from the AuthApi
       Audience: !GetAtt AuthApi.Audience
-      Tenant: mmm-dev.auth0.com
+      Tenant: my-tenant.auth0.com
       # Use the ClientId return value from the AuthApp
       ApplicationId: !GetAtt AuthApp.ClientId
 ```
@@ -76,7 +76,7 @@ AuthResource:
   Properties:
     ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
     Name: example-name
-    Tenant: mmm-dev.auth0.com
+    Tenant: my-tenant.auth0.com
     Type: spa # required (spa, m2m, web, native)
     Description: "" # required
     AllowAdGroups: [""] # list of AD groups that can generate tokens for your app
@@ -145,7 +145,7 @@ these properties are you can refer to the [management API](https://auth0.com/doc
 AuthResource:
   Type: Custom::Authn_Api
   Properties:
-    Tenant: mmm-dev.auth0.com
+    Tenant: my-tenant.auth0.com
     ServiceToken: !ImportValue pr-aws-cr-authn:LambdaArn
     Audience: http://my-api.com # required (url starting with https:// or http://)
 

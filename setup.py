@@ -1,18 +1,15 @@
 # setup.py
-'''
+"""
 Setup tools
-'''
-import re
-import subprocess
-from shutil import which
+"""
 from setuptools import setup, find_packages
 
-NAME = 'aws_cr_authn'
+NAME = 'aws_auth0_custom_resource'
 VERSION = '0.1'
 AUTHOR = 'Eric Walker'
-AUTHOR_EMAIL = 'ewalker3@mmm.com'
-DESCRIPTION = 'AWS Custom Resource for authentication resouruces'
-URL = 'https://github.mmm.com/MMM/aws-cr-authn'
+AUTHOR_EMAIL = 'erictwalker18@gmail.com'
+DESCRIPTION = 'AWS Custom Resource for Auth0 Resources'
+URL = 'https://github.com/3mcloud/aws-auth0-custom-resource'
 REQUIRES = [
     'auth0-python',
     'stringcase',
@@ -28,15 +25,10 @@ REQUIRES_TEST = [
     'safety>=1.8.7',
     'paste',
     'ptvsd',
-    'boto3',
+    'boto3',  # boto3 is included in lambda runtime
 ]
 
-REQUIRES_DOCS = [
-
-]
-LONG_DESCRIPTION = 'Auuthentication resources custom resource'
-
-# Probably don't need to edit below this line
+LONG_DESCRIPTION = 'Auth0 resources custom resource'
 
 setup(
     name=NAME,
@@ -50,8 +42,7 @@ setup(
     packages=find_packages(exclude=("tests", "tests.*")),
     install_requires=REQUIRES,
     extras_require={
-        'dev': REQUIRES_TEST,
-        'docs': REQUIRES_DOCS,
+        'dev': REQUIRES_TEST
     },
     include_package_data=True
 )

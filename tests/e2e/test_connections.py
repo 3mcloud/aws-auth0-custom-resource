@@ -1,6 +1,6 @@
-'''
+"""
 Verify that the update process works for connections in many cases
-'''
+"""
 from unittest.mock import MagicMock
 
 import pytest
@@ -12,18 +12,18 @@ import src.application
 
 
 def check_app_enabled(app_id, conn_id, provider, enabled=True):
-    '''
+    """
     Check that the connection has the given app id enabled
-    '''
+    """
     conn = provider.auth0.connections.get(conn_id, ['enabled_clients'])
     assert enabled == (app_id in conn['enabled_clients'])
 
 
 def test_application_connection(monkeypatch):
-    '''
+    """
     Test that the connections associated with an application work when created
     and updated.
-    '''
+    """
     provider = Auth0Provider(management_secret='qa/auth0/tenant/mmm-dev',
                              tenant='mmm-dev.auth0.com')
     monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
@@ -68,9 +68,9 @@ def test_application_connection(monkeypatch):
 
 
 def test_missing_connection_create(monkeypatch):
-    '''
+    """
     Test that a create and delete fail when a connection doesn't exist
-    '''
+    """
     provider = Auth0Provider(management_secret='qa/auth0/tenant/mmm-dev',
                              tenant='mmm-dev.auth0.com')
     monkeypatch.setenv('AUTH_PROVIDER', 'auth0')

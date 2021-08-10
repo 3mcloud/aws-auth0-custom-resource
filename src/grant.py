@@ -1,6 +1,6 @@
-'''
+"""
 Grant CRUD handler
-'''
+"""
 import logging
 
 import boto3
@@ -18,9 +18,9 @@ secrets_client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
 
 
 def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
-    '''
+    """
     Create a client grant with the given name and audience
-    '''
+    """
     props = event['ResourceProperties']
     validated = auth0Validator.validated(props)
     if not validated:
@@ -31,14 +31,14 @@ def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
     return grant_id
 
 def update(event, context, helper):  # pylint: disable=unused-argument
-    '''
+    """
     update a client grant
 
     Updates don't really happen. The reason this might change is that the
     user might update a logical ID or reference for the grant. When this
     happens we really want to re-run create because we assume the original
     API or Application were removed.
-    '''
+    """
     try:
         grant_id = create(event, context, helper)
     except Auth0Error as err:
@@ -51,7 +51,7 @@ def update(event, context, helper):  # pylint: disable=unused-argument
     return grant_id
 
 def delete(event, context, helper):  # pylint: disable=unused-argument
-    '''delete a client grant'''
+    """delete a client grant"""
     logger.info(event)
     props = event['ResourceProperties']
     provider = config.get_provider(props.get('Tenant'))
