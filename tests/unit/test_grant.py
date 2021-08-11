@@ -105,7 +105,7 @@ def test_delete(get_provider):
     event = {
         'PhysicalResourceId': 'foobar',
         'ResourceProperties': {
-            'Tenant': 'mmm-id.auth0.com',
+            'Tenant': 'my-tenant.auth0.com',
         },
     }
     grant.delete(event, {}, helper)

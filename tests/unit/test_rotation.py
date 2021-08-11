@@ -322,7 +322,7 @@ def test_set_secret():
 @patch('src.rotation.secret.get_secret')
 def test_test_secret(mock_get_secret):
     """Test the test_secret method"""
-    tenant = 'mmm-id.auth0.com'
+    tenant = 'my-tenant.auth0.com'
     client_id = 'client_id'
     client_secret = 'client_secret'
     mock_get_secret.return_value = json.dumps({
@@ -341,7 +341,7 @@ def test_test_secret(mock_get_secret):
 @patch('src.rotation.secret.get_secret')
 def test_test_secret_fail(mock_get_secret):
     """Test the test_secret method when the test fails"""
-    tenant = 'mmm-id.auth0.com'
+    tenant = 'my-tenant.auth0.com'
     client_id = 'client_id'
     client_secret = 'client_secret'
     mock_get_secret.return_value = json.dumps({

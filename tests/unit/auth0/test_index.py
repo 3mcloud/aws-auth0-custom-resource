@@ -18,10 +18,10 @@ def fixture_fake_auth0(_, secret, boto):
     secrets = Mock()
     boto.client.return_value = secrets
     secret.get_secret.return_value = (
-        '{"tenant": "mmm-id.auth0.com", "AUTH0_CLIENT_ID": "asdlfwo30a", '
+        '{"tenant": "my-tenant.auth0.com", "AUTH0_CLIENT_ID": "asdlfwo30a", '
         '"AUTH0_CLIENT_SECRET": "2029nvlda0:#--9D(1nvl1"}'
     )
-    provider = Auth0Provider('secret', 'mmm-id')
+    provider = Auth0Provider('secret', 'my-tenant')
     provider.auth0 = Mock()
     return provider
 
@@ -34,7 +34,7 @@ def test_authenticate(auth0_obj, get_token, fake_auth0):
     get_token.return_value = fake_token
     access_token = 'access_token'
     fake_token.client_credentials.return_value = {'access_token': access_token}
-    domain = 'mmm-id.auth0.com'
+    domain = 'my-tenant.auth0.com'
     client_id = 'client_id'
     secret = 'secret'
 

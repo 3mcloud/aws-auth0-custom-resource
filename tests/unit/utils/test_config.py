@@ -8,11 +8,11 @@ def test_get_provider(provider, monkeypatch):
     """Test for get_provider"""
     env = 'qa'
     monkeypatch.setenv('ENVIRON', env)
-    config.get_provider('mmm-id.auth0.com')
+    config.get_provider('my-tenant.auth0.com')
     # pylint: disable=no-member
     provider.assert_called_with(
-        f'{config.MANAGEMENT_PREFIX}qa/auth0/tenant/mmm-id',
-        'mmm-id.auth0.com'
+        f'{config.MANAGEMENT_PREFIX}qa/auth0/tenant/my-tenant',
+        'my-tenant.auth0.com'
     )
 
 @patch('src.utils.config.cfn')

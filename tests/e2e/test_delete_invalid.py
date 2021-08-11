@@ -17,7 +17,7 @@ def test_delete_grant(monkeypatch):
     event = {
         'PhysicalResourceId': 'cgr_foobarbazquxquux',
         'ResourceProperties': {
-            'Tenant': 'mmm-id.auth0.com',
+            'Tenant': 'my-tenant.auth0.com',
 
         }
     }
@@ -37,7 +37,7 @@ def test_delete_api(monkeypatch):
     event = {
         'PhysicalResourceId': 'foo-bar-baz',
         'ResourceProperties': {
-            'Tenant': 'mmm-id.auth0.com',
+            'Tenant': 'my-tenant.auth0.com',
 
         }
     }
@@ -60,7 +60,7 @@ def test_delete_application(monkeypatch):
         # pylint: disable=line-too-long
         'PhysicalResourceId': 'arn:aws:secretsmanager:us-east-1:638590899720:secret:/auth0-cr-e2e-not-exists/foo',
         'ResourceProperties': {
-            'Tenant': 'mmm-id.auth0.com',
+            'Tenant': 'my-tenant.auth0.com',
 
         }
     }
@@ -73,7 +73,7 @@ def test_delete_application(monkeypatch):
         # pylint: disable=line-too-long
         'PhysicalResourceId': 'arn:aws:secretsmanager:us-east-1:123456789012:secret:/auth0-cr-e2e-not-exists/foo',
         'ResourceProperties': {
-            'Tenant': 'mmm-id.auth0.com',
+            'Tenant': 'my-tenant.auth0.com',
 
         }
     }
@@ -87,5 +87,5 @@ def test_delete_application_auth0(monkeypatch):
     from Auth0 returns OK
     """
     monkeypatch.setenv('ENVIRON', 'qa')
-    provider = src.utils.config.get_provider('mmm-id.auth0.com')
+    provider = src.utils.config.get_provider('my-tenant.auth0.com')
     provider.delete_application('cr-authn-test-fake-app-id')
