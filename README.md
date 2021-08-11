@@ -49,12 +49,6 @@ To create an auth resource, include the following in your cloudformation templat
       ApplicationId: !GetAtt AuthApp.ClientId
 ```
 
-### Other properties
-
-```yaml
-    Provider: auth0 # optional (default auth0)
-```
-
 ## Examples
 
 See the [examples folder](examples/api).

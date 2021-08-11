@@ -9,7 +9,6 @@ from src.application import create, delete
 def test_app(monkeypatch):
     """Test the app methods"""
     monkeypatch.setenv('ENVIRON', 'qa')
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
 
     event = {
         "ResourceProperties": {
@@ -58,7 +57,6 @@ def test_delete(monkeypatch):
     """Helper to delete an app."""
     app_id = 'UKvwmw3VLahKGflmV33UguRRcg0WRSQK'
     monkeypatch.setenv('ENVIRON', 'qa')
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     delete_app(app_id)
 
 

@@ -1,24 +1,19 @@
 """Tests for utils/config"""
 from unittest.mock import patch, MagicMock
-import logging
 import src.utils.config as config
-from src.utils.config import PROVIDERS
 from src.validation.application import tagsValidator
 
-
-def test_get_provider(monkeypatch):
+@patch('src.utils.config.PROVIDER')
+def test_get_provider(provider, monkeypatch):
     """Test for get_provider"""
     env = 'qa'
-    provider = 'auth0'
     monkeypatch.setenv('ENVIRON', env)
-    monkeypatch.setenv('AUTH_PROVIDER', provider)
-    with patch.dict(PROVIDERS, {'auth0': MagicMock()}, clear=True):
-        config.get_provider('mmm-id.auth0.com')
-        # pylint: disable=no-member
-        PROVIDERS[provider].assert_called_with(
-            f'{config.MANAGEMENT_PREFIX}qa/auth0/tenant/mmm-id',
-            'mmm-id.auth0.com'
-        )
+    config.get_provider('mmm-id.auth0.com')
+    # pylint: disable=no-member
+    provider.assert_called_with(
+        f'{config.MANAGEMENT_PREFIX}qa/auth0/tenant/mmm-id',
+        'mmm-id.auth0.com'
+    )
 
 @patch('src.utils.config.cfn')
 def test_set_tags(cfn):

@@ -1,6 +1,6 @@
 export DOCKER_BUILDKIT=1
 AWS_DEFAULT_REGION?=us-east-1
-IMAGE_NAME=cr-authn
+IMAGE_NAME=aws-auth0-cr
 PROJECT=src
 flags?=
 link?=
@@ -18,14 +18,14 @@ develop:
 		-v ${PWD}:/app \
 		-p 5566:5678 \
 		-w /app \
-		cr-authn:test \
-		sh
+		${IMAGE_NAME}:test \
+		bash
 
 test-%:
 	docker run -it --rm \
 	-v ${PWD}:/app \
 	-e AWS_DEFAULT_REGION=us-east-1 \
-	cr-auth \
+	${IMAGE_NAME}:test \
 	pytest -s -v tests/$*
 
 unit:
@@ -62,9 +62,6 @@ debug-%:
 		-m pytest -vvv \
 		tests/$*$(target)
 
-sign:
-	drone sign MMM/aws-cr-authn --save
-
 test:
 ifeq ($(CI),)
 	$(eval CMD=test-)
@@ -74,7 +71,5 @@ endif
 	make $(CMD)lint
 	make $(CMD)security
 	make $(CMD)unit
-	# make $(CMD)integration
-	# make $(CMD)e2e
 
 .PHONY: develop test

@@ -160,7 +160,6 @@ Resources:
         Variables:
           ENVIRON: !Ref Environment
           ROTATION: !GetAtt RotationLambda.Arn
-          AUTH_PROVIDER: auth0
           KMS_KEY_ID: !Ref KMSKey
 
   RotationLambda:
@@ -177,7 +176,6 @@ Resources:
       Environment:
         Variables:
           ENVIRON: !Ref Environment
-          AUTH_PROVIDER: auth0
 
   RotationLambdaInvokePermission:
     Type: AWS::Lambda::Permission

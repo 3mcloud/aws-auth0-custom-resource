@@ -13,7 +13,6 @@ def test_delete_grant(monkeypatch):
     Test that deleting non-existent grants
     and invalid grant ids don't blow up
     """
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     event = {
         'PhysicalResourceId': 'cgr_foobarbazquxquux',
@@ -34,7 +33,6 @@ def test_delete_api(monkeypatch):
     Test that deleting non-existent grants
     and invalid grant ids don't blow up
     """
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     event = {
         'PhysicalResourceId': 'foo-bar-baz',
@@ -55,7 +53,6 @@ def test_delete_application(monkeypatch):
     Test that deleting non-existent applications
     and invalid application ids don't blow up
     """
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     # SEMS: 638590899720
     event = {
@@ -89,7 +86,6 @@ def test_delete_application_auth0(monkeypatch):
     Verify that deleting a non-existent application
     from Auth0 returns OK
     """
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     provider = src.utils.config.get_provider('mmm-id.auth0.com')
     provider.delete_application('cr-authn-test-fake-app-id')

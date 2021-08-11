@@ -26,7 +26,6 @@ def test_application_connection(monkeypatch):
     """
     provider = Auth0Provider(management_secret='qa/auth0/tenant/mmm-dev',
                              tenant='mmm-dev.auth0.com')
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv(
         'ROTATION', 'arn:aws:lambda:us-east-1:184518171237:function:qa-auth-rotation')
@@ -73,7 +72,6 @@ def test_missing_connection_create(monkeypatch):
     """
     provider = Auth0Provider(management_secret='qa/auth0/tenant/mmm-dev',
                              tenant='mmm-dev.auth0.com')
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv(
         'ROTATION', 'arn:aws:lambda:us-east-1:184518171237:function:qa-auth-rotation')

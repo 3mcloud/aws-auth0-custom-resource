@@ -24,7 +24,6 @@ def test_create_grant(monkeypatch):
     audience = f'https://{name}.co'
     client_id = None
     api_id = None
-    monkeypatch.setenv('AUTH_PROVIDER', 'auth0')
     monkeypatch.setenv('ENVIRON', 'qa')
 
     provider = config.get_provider(tenant)

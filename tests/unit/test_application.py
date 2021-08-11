@@ -22,7 +22,6 @@ def does_not_raise():
 cases = [
     {
         'name': 'auth0_required_only',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -42,7 +41,6 @@ cases = [
     },
     {
         'name': 'auth0_overwrite_default_spa_grants',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -63,7 +61,6 @@ cases = [
     },
     {
         'name': 'auth0_coerce_app_type',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'm2m',
@@ -83,7 +80,6 @@ cases = [
     },
     {
         'name': 'auth0_m2m_grant_type_ok',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'm2m',
@@ -105,7 +101,6 @@ cases = [
 
     {
         'name': 'auth0_spa_grant_type_ok',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -126,7 +121,6 @@ cases = [
     },
     {
         'name': 'auth0_refresh_token_ok',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -157,7 +151,6 @@ cases = [
     },
     {
         'name': 'auth0_m2m_grant_type_all',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'm2m',
@@ -192,7 +185,6 @@ cases = [
     },
     {
         'name': 'auth0_moar_config',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -238,7 +230,6 @@ cases = [
     },
     {
         'name': 'auth0_invalid_type',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'bar',
@@ -251,7 +242,6 @@ cases = [
     },
     {
         'name': 'auth0_tags',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'Type': 'spa',
@@ -320,7 +310,6 @@ def test_create(ssm, secrets_client, get_provider, case, monkeypatch):
     monkeypatch.setenv('KMS_KEY_ID', 'baz_key')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('ROTATION', 'arn:aws:qux')
-    monkeypatch.setenv('AUTH_PROVIDER', case['provider'])
 
     secrets_client.create_secret.return_value = {
         'ARN': 'arn:aws:secret',
@@ -388,7 +377,6 @@ def test_update(get_muxed_secret, get_provider, case, monkeypatch):
     monkeypatch.setenv('KMS_KEY_ID', 'baz_key')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv('ROTATION', 'arn:aws:qux')
-    monkeypatch.setenv('AUTH_PROVIDER', case['provider'])
 
     provider = MagicMock()
     provider.update_application.return_value = ('foo', 'bar')  # client_id, client_secret

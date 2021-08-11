@@ -10,11 +10,10 @@ from src.utils import secret
 def test_get_secret():
     """Test for get_secret"""
     client = Mock()
-    logger = Mock()
     client.get_secret_value = Mock(
         return_value={'SecretString': '{"example":"value"}'})
     secret_id = 'arn:aws:secretsmanager:secret/id'
-    secret.get_secret(client, secret_id, logger)
+    secret.get_secret(client, secret_id)
     client.get_secret_value.assert_called_with(
         SecretId=secret_id, VersionStage='AWSCURRENT'
     )
@@ -29,7 +28,7 @@ def test_get_secret():
         return_value={'SecretBinary': base64.b64encode(
             expected)}
     )
-    res = secret.get_secret(client, secret_id, logger)
+    res = secret.get_secret(client, secret_id)
     assert res == expected
     client.get_secret_value.assert_called_with(
         SecretId=secret_id, VersionStage='AWSCURRENT'

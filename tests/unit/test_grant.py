@@ -20,7 +20,6 @@ def does_not_raise():
 cases = [
     {
         'name': 'auth0_required_only',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'ApplicationId': '1234',
@@ -35,7 +34,6 @@ cases = [
     },
     {
         'name': 'auth0_all_config',
-        'provider': 'auth0',
         'parameters': {
             'Tenant': 'foo.com',
             'ApplicationId': '1234',

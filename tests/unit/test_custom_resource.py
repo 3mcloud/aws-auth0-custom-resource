@@ -11,7 +11,6 @@ from src import custom_resource as index
 def test_lambda_handler(_, resource):
     """Test for create events to the lambda handler"""
     new_message = 'new message'
-    context = Mock()
     event = {
         'RequestType': 'Create',
         'ResponseURL': 's3::/fake/path',
@@ -22,7 +21,7 @@ def test_lambda_handler(_, resource):
         'ResourceProperties': {}
     }
     resource().create.return_value = new_message
-    index.lambda_handler(event, context)
+    index.lambda_handler(event, {})
 
 @patch('src.custom_resource.get_resource')
 @patch('src.custom_resource.config')
