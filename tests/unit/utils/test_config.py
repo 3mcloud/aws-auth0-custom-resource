@@ -1,6 +1,6 @@
 """Tests for utils/config"""
 from unittest.mock import patch, MagicMock
-import src.utils.config as config
+from src.utils import config
 from src.validation.application import tagsValidator
 
 @patch('src.utils.config.PROVIDER')

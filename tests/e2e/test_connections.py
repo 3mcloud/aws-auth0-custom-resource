@@ -7,7 +7,7 @@ import pytest
 from auth0.v3.exceptions import Auth0Error
 
 import src.utils.config
-from src.auth0.index import Auth0Provider
+from src.auth0_provider.index import Auth0Provider
 import src.application
 
 

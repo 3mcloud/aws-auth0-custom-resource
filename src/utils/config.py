@@ -1,5 +1,4 @@
 """Config util"""
-import logging
 import os
 
 import boto3

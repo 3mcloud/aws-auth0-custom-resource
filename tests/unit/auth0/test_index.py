@@ -2,14 +2,14 @@
 """Tests for auth0/index.py"""
 from unittest.mock import patch, MagicMock as Mock
 import pytest
-from src.auth0.index import Auth0Provider
-import src.auth0.index as index
+from src.auth0_provider.index import Auth0Provider
+from src.auth0_provider import index
 
 
 @pytest.fixture(name='fake_auth0')
-@patch('src.auth0.index.boto3')
-@patch('src.auth0.index.secret')
-@patch('src.auth0.index.Auth0Provider.authenticate')
+@patch('src.auth0_provider.index.boto3')
+@patch('src.auth0_provider.index.secret')
+@patch('src.auth0_provider.index.Auth0Provider.authenticate')
 def fixture_fake_auth0(_, secret, boto):
     """Test for auth0provider object creation and fixture
 
@@ -26,8 +26,8 @@ def fixture_fake_auth0(_, secret, boto):
     return provider
 
 
-@patch('src.auth0.index.GetToken')
-@patch('src.auth0.index.Auth0')
+@patch('src.auth0_provider.index.GetToken')
+@patch('src.auth0_provider.index.Auth0')
 def test_authenticate(auth0_obj, get_token, fake_auth0):
     """Test for authenticate method"""
     fake_token = Mock()
@@ -64,7 +64,7 @@ def test_resource(fake_auth0):
     assert grant_id == g_id
 
 
-@patch('src.auth0.index.time')
+@patch('src.auth0_provider.index.time')
 def test_get_resource_server(_, fake_auth0):
     """Test for get_resource_server"""
     url = 'url.mmm.com'

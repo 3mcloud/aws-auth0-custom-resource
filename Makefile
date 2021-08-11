@@ -45,7 +45,7 @@ e2e:
 		tests/e2e$(target)
 
 lint:
-	python -m pylint src/**/*.py tests/**/*.py
+	PYTHONPATH=. python -m pylint .
 
 
 security:

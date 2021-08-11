@@ -5,12 +5,12 @@ import json
 import logging
 import os
 
-from auth0.v3.exceptions import Auth0Error
 import boto3
 import botocore
 from botocore.exceptions import ClientError
 from crhelper import CfnResource
 import stringcase
+from auth0.v3.exceptions import Auth0Error
 
 from .lambdatype import LambdaContext, LambdaDict
 from .utils import config, secret
@@ -25,7 +25,7 @@ secrets_client = boto3.client('secretsmanager')
 ssm = boto3.client('ssm')
 
 
-def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
+def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:  # pylint: disable=too-many-locals
     """
     Create an application with the given name and kind
     """

@@ -3,9 +3,9 @@ API CRUD handler
 """
 import logging
 
-from auth0.v3.exceptions import Auth0Error
 import boto3
 from crhelper import CfnResource
+from auth0.v3.exceptions import Auth0Error
 
 from .utils import config
 from .lambdatype import LambdaDict, LambdaContext

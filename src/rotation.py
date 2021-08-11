@@ -2,10 +2,8 @@
 
 import logging
 import json
-import os
 import boto3
 import botocore
-from auth0.v3.exceptions import Auth0Error
 from .utils import config, secret
 
 logger = logging.getLogger('aws-auth0-cr')

@@ -4,7 +4,6 @@ under the platform level visible to the user, and create apps for them.
 
 Using this repo as reference arch: https://github.com/binxio/cfn-auth0-provider
 """
-import os
 import logging
 from typing import Any
 import boto3

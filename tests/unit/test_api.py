@@ -8,7 +8,7 @@ import pytest
 from auth0.v3.exceptions import Auth0Error
 
 from src.validation.api import auth0Validator
-import src.api as api
+from src import api
 
 
 @contextmanager

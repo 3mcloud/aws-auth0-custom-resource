@@ -1,6 +1,6 @@
 """End to end test for auth0 resource cycle"""
 
-from src.auth0.index import Auth0Provider
+from src.auth0_provider.index import Auth0Provider
 
 
 def test_connection():

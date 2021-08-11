@@ -8,8 +8,7 @@ import pytest
 from auth0.v3.exceptions import Auth0Error
 
 from src.validation.grant import auth0Validator
-import src.grant as grant
-
+from src import grant
 
 @contextmanager
 def does_not_raise():

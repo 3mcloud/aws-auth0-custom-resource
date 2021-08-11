@@ -5,8 +5,8 @@ not raise exceptions
 import random
 import string
 from unittest.mock import MagicMock
-import src.utils.config as config
-import src.grant as grant
+from src.utils import config
+from src import grant
 
 
 

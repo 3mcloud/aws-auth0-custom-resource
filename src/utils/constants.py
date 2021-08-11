@@ -1,5 +1,5 @@
 """Constants to configure you custom resource"""
-from src.auth0.index import Auth0Provider
+from src.auth0_provider.index import Auth0Provider
 
 TENANT = 'my-tenant.auth0.com'
 PROVIDER_STR = 'auth0'
