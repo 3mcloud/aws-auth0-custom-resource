@@ -19,11 +19,10 @@ from .validation.application import (
     tagsValidator,
 )
 
-logger = logging.getLogger()  # pylint: disable=invalid-name
-logger.setLevel(logging.INFO)
+logger = logging.getLogger('aws-auth0-cr')
 
-secrets_client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
-ssm = boto3.client('ssm')  # pylint: disable=invalid-name
+secrets_client = boto3.client('secretsmanager')
+ssm = boto3.client('ssm')
 
 
 def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:
@@ -186,7 +185,6 @@ def delete(event: LambdaDict, context: LambdaContext, helper: CfnResource):  # p
             app_secret = json.loads(secret.get_secret(
                 secrets_client,
                 event['PhysicalResourceId'],
-                logger,
             ))
             app_id = app_secret['client_id']
         except botocore.exceptions.ClientError as err:

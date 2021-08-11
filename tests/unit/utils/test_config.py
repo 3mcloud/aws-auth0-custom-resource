@@ -6,21 +6,6 @@ from src.utils.config import PROVIDERS
 from src.validation.application import tagsValidator
 
 
-def test_set_logging_level():
-    """Test for set_logging_level"""
-    cases = {
-        'CRITICAL': logging.CRITICAL,
-        'ERROR': logging.ERROR,
-        'WARNING': logging.WARN,
-        'INFO': logging.INFO,
-        'DEBUG': logging.DEBUG
-    }
-    logger = logging.getLogger()
-    for level_str in cases:
-        config.set_logging_level(logger, level_str)
-        assert cases[level_str] == logger.getEffectiveLevel()
-
-
 def test_get_provider(monkeypatch):
     """Test for get_provider"""
     env = 'qa'

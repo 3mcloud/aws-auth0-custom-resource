@@ -4,33 +4,17 @@ import os
 
 import boto3
 
-from src.auth_providers import PROVIDERS
+from .constants import PROVIDER_STR, PROVIDER
 
-cfn = boto3.client('cloudformation')  # pylint: disable=invalid-name
+cfn = boto3.client('cloudformation')
 MANAGEMENT_PREFIX = 'arn:aws:secretsmanager:us-east-1:184518171237:secret:'
-
-
-def set_logging_level(logger, level_str):
-    """Set up logging based on the LOGGING_LEVEL environment variable"""
-    if level_str == 'CRITICAL':
-        logger.setLevel(logging.CRITICAL)
-    if level_str == 'ERROR':
-        logger.setLevel(logging.ERROR)
-    if level_str == 'WARNING':
-        logger.setLevel(logging.WARNING)
-    if level_str == 'INFO':
-        logger.setLevel(logging.INFO)
-    if level_str == 'DEBUG':
-        logger.setLevel(logging.DEBUG)
-
 
 def get_provider(tenant):
     """Get the provider with authentication"""
-    provider = os.environ.get('AUTH_PROVIDER')
     tenant_name = tenant.split('.')[0]
     environ = os.environ.get('ENVIRON')
-    management_secret = f'{MANAGEMENT_PREFIX}{environ}/{provider}/tenant/{tenant_name}'
-    return PROVIDERS[provider](management_secret, tenant)
+    management_secret = f'{MANAGEMENT_PREFIX}{environ}/{PROVIDER_STR}/tenant/{tenant_name}'
+    return PROVIDER(management_secret, tenant)
 
 
 def set_tags(helper, event=None):

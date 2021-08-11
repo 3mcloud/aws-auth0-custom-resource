@@ -11,3 +11,6 @@ ignore-docstrings=yes
 
 # Ignore imports when computing similarities.
 ignore-imports=yes
+
+# Ignore invalid name for logger
+ignore-invalid-name=yes

@@ -8,11 +8,10 @@ import botocore
 from auth0.v3.exceptions import Auth0Error
 from .utils import config, secret
 
-logger = logging.getLogger()  # pylint: disable=invalid-name
-logger.setLevel(logging.INFO)  # set INFO level by default
+logger = logging.getLogger('aws-auth0-cr')
 
 # Setup the client
-client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
+client = boto3.client('secretsmanager')
 
 
 def lambda_handler(event, context):
@@ -29,9 +28,6 @@ def lambda_handler(event, context):
       ValueError: If the secret is not properly configured for rotation
       KeyError: If the event parameters do not contain the expected keys
     """
-    # Set up logging based on the LOGGING_LEVEL environment variable
-    level_str = os.getenv('LOGGING_LEVEL', 'INFO')
-    config.set_logging_level(logger, level_str)
     logger.debug(event)
     logger.debug(context)
 
@@ -138,7 +134,7 @@ def test_secret(secrets_client, provider, arn):
     """
     logger.info('test secret %s', arn)
     new_secret = json.loads(secret.get_secret(
-        client=secrets_client, secret_id=arn, logger=logger, stage="AWSPENDING"))
+        client=secrets_client, secret_id=arn, stage="AWSPENDING"))
 
     application = provider.get_application(
         client_id=new_secret['client_id'],

@@ -3,7 +3,7 @@ Validate and coerce event resource parameters
 """
 from . import AuthnValidator, to_bool
 
-auth0 = {  # pylint: disable=invalid-name
+auth0 = {
     'tenant': {'type': 'string', 'readonly': True, 'empty': False},
     'service_token': {'type': 'string', 'readonly': True},
     'name': {'type': 'string'},
@@ -28,6 +28,6 @@ auth0 = {  # pylint: disable=invalid-name
     # 'client': {'type': 'dict'} don't allow client, force the use of Authn_Grant
 }
 
-auth0Validator = AuthnValidator(  # pylint: disable=invalid-name
+auth0Validator = AuthnValidator(
     auth0,
 )

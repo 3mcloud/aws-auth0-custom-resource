@@ -7,7 +7,7 @@ from auth0.v3.authentication import GetToken
 from auth0.v3.management import Auth0
 from src.utils import secret
 
-logger = logging.getLogger()  # pylint: disable=invalid-name
+logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Page limit for auth0 in case of run-away pagination

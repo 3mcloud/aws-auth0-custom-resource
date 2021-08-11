@@ -11,10 +11,9 @@ from .utils import config
 from .lambdatype import LambdaDict, LambdaContext
 from .validation.grant import auth0Validator
 
-logger = logging.getLogger()  # pylint: disable=invalid-name
-logger.setLevel(logging.INFO)
+logger = logging.getLogger('aws-auth0-cr')
 
-secrets_client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
+secrets_client = boto3.client('secretsmanager')
 
 
 def create(event: LambdaDict, _: LambdaContext, helper: CfnResource) -> str:

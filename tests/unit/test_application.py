@@ -19,7 +19,7 @@ def does_not_raise():
     yield
 
 
-cases = [  # pylint: disable=invalid-name
+cases = [
     {
         'name': 'auth0_required_only',
         'provider': 'auth0',
@@ -288,7 +288,7 @@ cases = [  # pylint: disable=invalid-name
         },
     },
 ]
-case_names = [case['name'] for case in cases]  # pylint: disable=invalid-name
+case_names = [case['name'] for case in cases]
 
 # pylint: disable=line-too-long
 

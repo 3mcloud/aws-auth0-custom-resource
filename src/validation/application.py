@@ -260,11 +260,11 @@ def with_defaults(document):
         return {}
     return application_defaults[app_type]
 
-auth0Validator = AuthnValidator(  # pylint: disable=invalid-name
+auth0Validator = AuthnValidator(
     auth0,
     with_defaults=with_defaults,
 )
-tagsValidator = Validator(  # pylint: disable=invalid-name
+tagsValidator = Validator(
     tags_schema,
     purge_unknown=True,
 )

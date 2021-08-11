@@ -13,12 +13,11 @@ from .lambdatype import LambdaDict, LambdaContext
 from .utils import config
 from . import application, api, grant
 
-logger = logging.getLogger()  # pylint: disable=invalid-name
-logger.setLevel(logging.INFO)  # set info level by default
+logger = logging.getLogger('aws-auth0-cr')
 
 # Setup the client
-secrets_client = boto3.client('secretsmanager')  # pylint: disable=invalid-name
-helper = CfnResource(  # pylint: disable=invalid-name
+secrets_client = boto3.client('secretsmanager')
+helper = CfnResource(
     json_logging=False,
     log_level='DEBUG',
     boto_level='CRITICAL',
@@ -119,8 +118,6 @@ def stack_is_failing(events):
 def lambda_handler(event: LambdaDict, context: LambdaContext):
     """ Simply instantiates the cfn helper library """
     # Set up logging based on the LOGGING_LEVEL environment variable
-    level_str = os.getenv('LOGGING_LEVEL', 'INFO')
-    config.set_logging_level(logger, level_str)
     logger.debug('Event: %s', event)
     logger.debug('Context: %s', context)
     # Manually enable polling for create if the resource type not grant

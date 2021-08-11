@@ -1,8 +1,11 @@
 """Secret is a utility for getting a secrets manager secret value"""
 import base64
+import logging
 from botocore.exceptions import ClientError
 
-def get_muxed_secret(client, secret_id, logger, stage='AWSCURRENT'):
+logger = logging.getLogger('aws-auth0-cr')
+
+def get_muxed_secret(client, secret_id, stage='AWSCURRENT'):
     """
     Get a secret from secrets manager with the value
     decoded to SecretValue
@@ -45,7 +48,7 @@ def get_muxed_secret(client, secret_id, logger, stage='AWSCURRENT'):
         logger.error('Error with secretsmanager API call: %s', err.response)
         raise err
 
-def get_secret(client, secret_id, logger, stage='AWSCURRENT'):
+def get_secret(client, secret_id, stage='AWSCURRENT'):
     """Get a secret value from secrets manager"""
-    resource = get_muxed_secret(client, secret_id, logger, stage)
+    resource = get_muxed_secret(client, secret_id, stage)
     return resource['SecretValue']

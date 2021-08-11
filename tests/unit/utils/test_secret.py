@@ -19,7 +19,7 @@ def test_get_secret():
         SecretId=secret_id, VersionStage='AWSCURRENT'
     )
 
-    secret.get_secret(client, secret_id, logger, stage='AWSPENDING')
+    secret.get_secret(client, secret_id, stage='AWSPENDING')
     client.get_secret_value.assert_called_with(
         SecretId=secret_id, VersionStage='AWSPENDING'
     )

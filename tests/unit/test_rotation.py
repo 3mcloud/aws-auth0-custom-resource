@@ -335,7 +335,7 @@ def test_test_secret(mock_get_secret):
     client = Mock()
     assert rotation.test_secret(client, provider, ARN)
     mock_get_secret.assert_called_with(
-        client=client, secret_id=ARN, logger=rotation.logger, stage='AWSPENDING')
+        client=client, secret_id=ARN, stage='AWSPENDING')
 
 
 @patch('src.rotation.secret.get_secret')
@@ -355,7 +355,7 @@ def test_test_secret_fail(mock_get_secret):
     with pytest.raises(ValueError):
         rotation.test_secret(client, provider, ARN)
     mock_get_secret.assert_called_with(
-        client=client, secret_id=ARN, logger=rotation.logger, stage='AWSPENDING')
+        client=client, secret_id=ARN, stage='AWSPENDING')
 
 
 def test_finish_secret():
