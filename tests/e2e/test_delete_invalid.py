@@ -71,7 +71,7 @@ def test_delete_application(monkeypatch):
     event = {
         # resource not found
         # pylint: disable=line-too-long
-        'PhysicalResourceId': 'arn:aws:secretsmanager:us-east-1:184518171237:secret:/auth0-cr-e2e-not-exists/foo',
+        'PhysicalResourceId': 'arn:aws:secretsmanager:us-east-1:123456789012:secret:/auth0-cr-e2e-not-exists/foo',
         'ResourceProperties': {
             'Tenant': 'mmm-id.auth0.com',
 

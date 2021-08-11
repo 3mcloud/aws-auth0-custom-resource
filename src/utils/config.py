@@ -6,7 +6,7 @@ import boto3
 from .constants import PROVIDER_STR, PROVIDER
 
 cfn = boto3.client('cloudformation')
-MANAGEMENT_PREFIX = 'arn:aws:secretsmanager:us-east-1:184518171237:secret:'
+MANAGEMENT_PREFIX = 'arn:aws:secretsmanager:us-east-1:123456789012:secret:'
 
 def get_provider(tenant):
     """Get the provider with authentication"""

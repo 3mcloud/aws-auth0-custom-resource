@@ -28,7 +28,7 @@ def test_application_connection(monkeypatch):
                              tenant='mmm-dev.auth0.com')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv(
-        'ROTATION', 'arn:aws:lambda:us-east-1:184518171237:function:qa-auth-rotation')
+        'ROTATION', 'arn:aws:lambda:us-east-1:123456789012:function:qa-auth-rotation')
     # Use the aws/secretsmanager key for the test application
     monkeypatch.setenv('KMS_KEY_ID', '7c3f47f9-3bc8-41cd-8ccb-6ecfa1ab362a')
     ad_conn = 'con_WYljqEqcw2L8VU7c'
@@ -74,7 +74,7 @@ def test_missing_connection_create(monkeypatch):
                              tenant='mmm-dev.auth0.com')
     monkeypatch.setenv('ENVIRON', 'qa')
     monkeypatch.setenv(
-        'ROTATION', 'arn:aws:lambda:us-east-1:184518171237:function:qa-auth-rotation')
+        'ROTATION', 'arn:aws:lambda:us-east-1:123456789012:function:qa-auth-rotation')
     # Use the aws/secretsmanager key for the test application
     monkeypatch.setenv('KMS_KEY_ID', '7c3f47f9-3bc8-41cd-8ccb-6ecfa1ab362a')
     bad_conn = 'con_AAaaaAaaa1A1AA1a'

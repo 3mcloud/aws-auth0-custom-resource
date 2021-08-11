@@ -14,7 +14,7 @@ def test_app(monkeypatch):
         "ResourceProperties": {
             "ServiceToken": '1234',
             "Tenant": "mmm-dev.auth0.com",
-            "Name": 'cr-authn-test-184518171237',
+            "Name": 'cr-authn-test-123456789012',
             "Type": "spa",
             "Description": "An e2e test to ensure the basics work always",
             "Connections": [
@@ -66,7 +66,7 @@ def delete_app(app_id):
         "ResourceProperties": {
             "ServiceToken": '1234',
             "Tenant": "mmm-dev.auth0.com",
-            "Name": 'cr-authn-test-184518171237',
+            "Name": 'cr-authn-test-123456789012',
             "Type": "spa",
             "Description": "An e2e test to ensure the basics work always",
             "Connections": [

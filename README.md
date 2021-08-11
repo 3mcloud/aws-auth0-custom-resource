@@ -2,9 +2,18 @@
 
 A cloudformation custom resource for setting up an application and scoping it
 
-## Usage
+## Getting Started
 
-> This custom resource must exist in your account before you can use it. See how to [add to your account](#adding-to-your-account)
+### Setup
+
+- Set up management keys (TODO)
+- Change the account number in [config](src/utils/config.py) and [template.yml](template.yml).
+
+### Installation
+
+TODO aws cloudformation example, with some parameters
+
+### Usage
 
 To create an auth resource, include the following in your cloudformation template:
 
