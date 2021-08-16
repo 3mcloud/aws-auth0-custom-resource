@@ -1,0 +1,192 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Team:
+    Type: String
+  Unit:
+    Type: String
+  Owner:
+    Type: String
+  Environment:
+    Type: String
+  Product:
+    Type: String
+  Version:
+    Type: String
+  ArtifactBucket:
+    Type: String
+  ArtifactPath:
+    Type: String
+
+Resources:
+
+  KMSKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: KMS key to encrypt auth secrets
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: Enable IAM Root Administration Permissions
+            Effect: Allow
+            Principal:
+              AWS: !Sub arn:aws:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: "*"
+          - Effect: Allow
+            Principal: "*"
+            Action:
+              - kms:Encrypt
+              - kms:Decrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:CreateGrant
+              - kms:DescribeKey
+              - kms:RevokeGrant
+              - kms:ListGrant
+            Resource: "*"
+            Condition:
+              StringEquals:
+                kms:ViaService: secretsmanager.us-east-1.amazonaws.com
+                kms:CallerAccount: !Sub ${AWS::AccountId}
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Environment}-auth0-cr-role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  LambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: LambdaPolicy
+      Roles:
+        - !Ref LambdaRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+            Resource: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:*
+          - Effect: Allow
+            Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${CustomResourceLambda}:*
+          # To allow cfresource to poll via cw events
+          - Effect: Allow
+            Action:
+              - lambda:AddPermission
+              - lambda:RemovePermission
+              - events:PutRule
+              - events:DeleteRule
+              - events:PutTargets
+              - events:RemoveTargets
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+              - secretsmanager:ListSecrets
+              - secretsmanager:DescribeSecret
+              - secretsmanager:GetSecretValue
+              - secretsmanager:ListSecretVersionIds
+              - secretsmanager:CreateSecret
+              - secretsmanager:TagResource
+              - secretsmanager:UntagResource
+              - secretsmanager:PutSecretValue
+              - secretsmanager:CancelRotateSecret
+              - secretsmanager:DeleteSecret
+              - secretsmanager:RestoreSecret
+              - secretsmanager:RotateSecret
+              - secretsmanager:UpdateSecret
+              - secretsmanager:UpdateSecretVersionStage
+              - secretsmanager:PutResourcePolicy
+              - secretsmanager:DeleteResourcePolicy
+            Resource:
+              - !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/auth0/*
+              - !Sub arn:aws:secretsmanager:${AWS::Region}:184518171237:secret:${Environment}/auth0/*
+              - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-auth-rotation
+          - Effect: Allow
+            Action:
+              - ssm:PutParameter
+              - ssm:GetParameter
+              - ssm:DeleteParameter
+            Resource:
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}/auth0/*
+          - Effect: Allow
+            Action:
+              - kms:Encrypt
+              - kms:Decrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:DescribeKey
+              - kms:CreateGrant
+              - kms:ListGrant
+              - kms:RevokeGrant
+            Resource:
+              - !GetAtt KMSKey.Arn
+          - Effect: Allow
+            Action:
+              - kms:Decrypt
+            Resource:
+              - "*"
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+              - cloudformation:DescribeStackEvents
+            Resource:
+              - "*"
+
+  CustomResourceLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Environment}-auth-custom-resource
+      Code:
+        S3Bucket: !Ref ArtifactBucket
+        S3Key: !Sub ${ArtifactPath}/deployment.zip
+      Handler: src.custom_resource.lambda_handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.8
+      Timeout: 20
+      Environment:
+        Variables:
+          ENVIRON: !Ref Environment
+          ROTATION: !GetAtt RotationLambda.Arn
+          KMS_KEY_ID: !Ref KMSKey
+
+  RotationLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Environment}-auth-rotation
+      Code:
+        S3Bucket: !Ref ArtifactBucket
+        S3Key: !Sub ${ArtifactPath}/deployment.zip
+      Handler: src.rotation.lambda_handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.8
+      Timeout: 20
+      Environment:
+        Variables:
+          ENVIRON: !Ref Environment
+
+  RotationLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt RotationLambda.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: secretsmanager.amazonaws.com
+
+Outputs:
+  LambdaArn:
+    Description: Arn of the custom resource lambda
+    Value: !GetAtt CustomResourceLambda.Arn
+    Export:
+      Name: !Sub ${Environment}-aws-cr-authn:LambdaArn
